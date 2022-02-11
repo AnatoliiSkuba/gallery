@@ -14,19 +14,4 @@ function renderList(galleryItems) {
 
 renderList(galleryItems);
 
-const lightbox = new SimpleLightbox('.gallery a', { /* options */ });
-
-// galleryEl.addEventListener('click', selectorImg);
-
-
-// function selectorImg(event) {
-//   event.preventDefault();
-
-//   const galleryItem = galleryItems.find(galleryItem => galleryItem.preview === event.target.src);
-//   event.target.src = galleryItem.original;
-
-//   const modal = basicLightbox.create(`
-//     <div class="modal">
-//      <img width="1280" height="900" src="${galleryItem.original}">
-//     </div>
-// `).show();
+const lightbox = new SimpleLightbox('.gallery a', { captionsData: "alt", captionDelay: 250 });

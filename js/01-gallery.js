@@ -3,8 +3,6 @@ import { galleryItems } from './gallery-items.js';
 
 const galleryEl = document.querySelector('.gallery');
 
-
-
 function renderList(galleryItems) {
   const markup = galleryItems.map(({ preview, original, description }) => `<div class="gallery__item">
   <a class="gallery__link" href="${original}">
@@ -24,10 +22,6 @@ renderList(galleryItems);
 
 galleryEl.addEventListener('click', selectorImg);
 
-
-
-
-
 function selectorImg(event) {
   event.preventDefault();
 
@@ -36,35 +30,41 @@ function selectorImg(event) {
 
   const modal = basicLightbox.create(`
     <div class="modal">
-     <img width="1280" height="900" src="${galleryItem.original}">
-    </div>
-`).show();
-
-  
-//   const visible = basicLightbox.visible()
-//   if (visible === true) {
-//  document.addEventListener("keydown", event => {
-//   console.log("key: ", event.key);
-// });
-//   }
-
-
-// visible = modal.visible()
-
-   console.log("visible", visible)
-
-  
-  console.log(event.currentTarget);
-  console.log(event.target);
-  console.log(event.target.src);
+     <img src="${galleryItem.original}">
+    </div>`
+    , {
+    onShow: (modal) => {
+        const keydownClick = ({ key }) => {
+        if (key === 'Escape') {
+          modal.close();
+          document.removeEventListener("keydown", keydownClick);
+      };
+    };
+          document.addEventListener("keydown", keydownClick);
+    },
+    onClose: (modal) => {
+      event.target.src = galleryItem.preview;
+    }
   }
-
-// console.log("visible", visible)
-
-//   onClose: (modal) => {
-//     document.addEventListener("keydown", event => {
-//   console.log("key: ", event.key);
-// });
-//   }
+  );
   
+  const handleClick = () => {
+  if (basicLightbox.visible())
+  {
+    document.addEventListener("click", handleClick2);
+    document.removeEventListener("click", handleClick);
+    };
+  };
+  
+document.addEventListener("click", handleClick);
 
+  function handleClick2() {
+  if (basicLightbox.visible())
+  {
+    modal.close();
+    document.removeEventListener("click", handleClick2);
+    };
+  };
+  
+  modal.show();
+}
