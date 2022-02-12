@@ -26,45 +26,22 @@ function selectorImg(event) {
   event.preventDefault();
 
   const galleryItem = galleryItems.find(galleryItem => galleryItem.preview === event.target.src);
-  event.target.src = galleryItem.original;
 
   const modal = basicLightbox.create(`
     <div class="modal">
     <img src="${galleryItem.original}">
     </div>`
-    , {
-      onClose: (modal) => {
-      event.target.src = galleryItem.preview;
-      }
-    }
+    ,
   );
   
-  const handleClick = () => {
-    if (basicLightbox.visible()) {
-      document.addEventListener("click", handleClick2);
-      document.addEventListener("keydown", keydownClick);
-      document.removeEventListener("click", handleClick);
-    };
-  };
-
   const keydownClick = ({ key }) => {
     if (key === 'Escape') {
       modal.close();
-      document.removeEventListener("keydown", keydownClick);
       document.removeEventListener("click", handleClick);
     };
   };
   
-  function handleClick2() {
-    if (basicLightbox.visible()) {
-      modal.close();
-      document.removeEventListener("click", handleClick2);
-      document.removeEventListener("click", handleClick);
-      document.removeEventListener("keydown", keydownClick);
-    };
-  };
-
-  document.addEventListener("click", handleClick);
+  document.addEventListener("keydown", keydownClick);
   
   modal.show();
 }
